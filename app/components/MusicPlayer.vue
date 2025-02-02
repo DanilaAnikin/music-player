@@ -9,7 +9,10 @@
         <NuxtLink
           v-for="song in songs"
           :key="song.id"
-          :to="`/songs/${song.id}`"
+          :to="{
+            path: '/songs/SongPlayer',
+            query: { id: song.id }
+          }"
           class="px-2 py-1 hover:bg-[#003566] truncate border border-[#cfcfcf] cursor-pointer rounded-lg transition-all duration-200"
         >
           <span>{{ song.title }}</span>
@@ -20,15 +23,18 @@
 
     <!-- Playlist Songs Section -->
     <div v-else-if="currentPlaylist.songs.length">
-      <button @click="goBackToSongs" class="p-2 bg-[#15616d] text-[#001d3d] mb-4 rounded-lg shadow-md hover:bg-[#03045e] transition-all">Back to All Songs</button>
+      <button @click="goBackToSongs" class="p-2 bg-[#15616d] text-[#001d3d] mb-4 rounded-lg shadow-md hover:bg-[#14515a] transition-all">Back to All Songs</button>
       <h3 class="text-xl text-[#15616d]">Songs in {{ currentPlaylist.name }}</h3>
       <ul class="mt-2 space-y-2">
         <NuxtLink
           v-for="song in currentPlaylist.songs"
           :key="song.id"
-          :to="`/songs/${song.id}`"
+          :to="{
+            path: '/songs/SongPlayer',
+            query: { id: song.id }
+          }"
           class="p-2 hover:bg-[#003566] border border-[#cfcfcf] cursor-pointer rounded-lg transition-all duration-200 ease-in-out flex justify-between"
-        >
+        > 
           <span class="truncate">{{ song.title }}</span>
           <button
             @click="removeSongFromPlaylist(song.id)"
@@ -42,7 +48,7 @@
 
     <!-- No Songs in Playlist Section -->
     <div v-else>
-      <button @click="goBackToSongs" class="p-2 bg-[#15616d] text-[#001d3d] mb-4 rounded-lg shadow-md hover:bg-[#03045e] transition-all">Back to All Songs</button>
+      <button @click="goBackToSongs" class="p-2 bg-[#15616d] text-[#001d3d] mb-4 rounded-lg shadow-md hover:bg-[#14515a] transition-all">Back to All Songs</button>
       <h3 class="text-xl text-[#15616d]">No songs in {{ currentPlaylist.name }}</h3>
     </div>
 

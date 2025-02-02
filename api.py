@@ -41,6 +41,32 @@ def init_db():
 
 init_db()
 
+@app.route('/songs/<int:song_id>', methods=['GET'])
+def get_song_by_id(song_id):
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        # Fetch the song by ID
+        c.execute("SELECT * FROM songs WHERE id = ?", (song_id,))
+        song_record = c.fetchone()
+        conn.close()
+
+        if not song_record:
+            return jsonify({"error": "Song not found"}), 404
+
+        song_id, title, artist, file_path = song_record
+        song_data = {
+            "id": song_id,
+            "title": title,
+            "artist": artist if artist else "Unknown",
+            "file_path": f"{file_path}"
+        }
+
+        return jsonify(song_data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # Get all songs
 @app.route('/songs', methods=['GET'])
 def get_songs():
